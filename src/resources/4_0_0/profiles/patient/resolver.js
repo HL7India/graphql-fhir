@@ -9,8 +9,23 @@ module.exports.getPatient = function getPatient(
 	context = {},
 	info,
 ) {
-	let { server, version, req, res } = context;
-	return {};
+    let { server, version, req, res } = context;
+    let db = server.db;
+	const collection = db.collection('Patient');
+	return new Promise ((resolve, reject) => {
+		collection.findOne({"identifier.id": args.identifier},(err, patient) => {
+			if (patient != null) {
+                patient._id = {id : patient._id.toString()};
+                resolve (patient)
+            } else {
+                if (patient === null) {
+                    reject(new Error('No matching patient record found'))
+                } else {
+                    reject(new Error(`Error occurred in fetching patient, ${err}`))
+                }
+            }
+		})
+	});
 };
 
 /**
@@ -24,8 +39,26 @@ module.exports.getPatientList = function getPatientList(
 	context = {},
 	info,
 ) {
-	let { server, version, req, res } = context;
-	return {};
+    let { server, version, req, res } = context;
+    let db = server.db;
+	const collection = db.collection('Patient');
+	return new Promise ((resolve,reject) => {
+		collection.find({"resourceType": "Patient"}).toArray((err, patientList) => {
+            if (patientList.length > 0) {
+                let array = []
+                for (let i = 0; i < patientList.length; i++) {
+                    array.push({resource: patientList[i]})
+                }
+                resolve({entry: array})
+            } else {
+                if (patientList.length === 0) {
+                    reject(new Error('No matching patient list records found'))
+                } else {
+                    reject(new Error(`Error occurred in fetching patient list, ${err}`))
+                }
+            }
+		})
+	});
 };
 
 /**
@@ -55,7 +88,21 @@ module.exports.createPatient = function createPatient(
 	info,
 ) {
 	let { server, version, req, res } = context;
-	return {};
+	let db = server.db;
+	const collection = db.collection('Patient');
+	return new Promise ((resolve,reject) => {
+		collection.insertOne(args.resource, (err, patient) => {
+			if (err) {
+				console.log('error in inserting');
+			} else {
+				
+				let patientRec = JSON.parse(JSON.stringify(patient.ops));
+                patientRec[0]._id = {id: patientRec[0]._id};
+
+				resolve(patientRec[0]);
+			}
+		})
+	});
 };
 
 /**
@@ -70,7 +117,19 @@ module.exports.updatePatient = function updatePatient(
 	info,
 ) {
 	let { server, version, req, res } = context;
-	return {};
+	let db = server.db;
+	const collection = db.collection("Patient");
+	return new Promise ((resolve,reject) => {
+		collection.replaceOne({"identifier.id": args.id}, args.resource, (err, patient) => {
+			if (err) {
+				console.log('error in inserting',err);
+			} else {
+				let patientRec = JSON.parse(JSON.stringify(patient.ops));
+				patientRec[0]._id = {id: patientRec[0]._id};
+				resolve(patientRec[0]);
+			}
+		})
+	});
 };
 
 /**

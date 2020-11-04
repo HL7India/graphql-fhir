@@ -13,6 +13,7 @@ const helmet = require('helmet');
 const https = require('https');
 const http = require('http');
 const fs = require('fs');
+const { MongoClient } = require('mongodb'); //HL7India require mongodb to use later
 
 class Server {
 	constructor(config = {}) {
@@ -36,12 +37,28 @@ class Server {
 	}
 
 	// Initialize a database connection
-	// eslint-disable-next-line no-unused-vars
-	initializeDatabaseConnection(options = {}) {
-		// Store the db on this somehow
-
-		// return self for chaining
-		return this;
+    // eslint-disable-next-line no-unused-vars
+    // HL7India added the db connection to mongodb
+	initializeDatabaseConnection(options ={}) {
+		// Connecting to Mongo is async
+		// Let's handle this with a promise
+		let {
+			url,
+			db_name,
+			mongo_options
+		} = options;
+		return new Promise((resolve, reject) => {
+			
+		  MongoClient.connect(url, mongo_options, (err, client) => {
+			if (err) return reject(err);
+			// Store the client and db on the server instance,
+			// the server instance is passed into the resolvers
+			// so it will make accessing this later a breeze
+			this.client = client;
+			this.db = client.db(db_name);
+			return resolve();
+		  });
+		});
 	}
 
 	// Configure session
