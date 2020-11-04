@@ -1,9 +1,14 @@
+
 # GraphQL-FHIR [![Build Status](https://travis-ci.org/Asymmetrik/graphql-fhir.svg?branch=master)](https://travis-ci.org/Asymmetrik/graphql-fhir) [![Coverage Status](https://coveralls.io/repos/github/Asymmetrik/graphql-fhir/badge.svg?branch=master)](https://coveralls.io/github/Asymmetrik/graphql-fhir?branch=master) [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE)
 > A secure GraphQL implementation for the [HL7 FHIR specification](https://www.hl7.org/fhir/) based on the current implementation guide for [GraphQL with FHIR](https://build.fhir.org/graphql.html) and developed with Node.js and Express.
 
 ## Prerequisites
 
 You should have a basic understanding of working in Node.js and at least a basic understanding of what GraphQL is and how it works.
+
+## HL7 India
+
+This implementation uses a Mongodb connection. Before you can run it needs the credentials for the database to be provided in config.js. For quick easy reference, find HL7India tag for changes other than src folder
 
 ## Getting Started
 
