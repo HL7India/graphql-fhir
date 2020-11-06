@@ -1,7 +1,7 @@
 const { SERVER_CONFIG, DB_USER } = require('./config.js');
 const FHIRServer = require('./lib/server.js');
 
-const {dbname, username, password} = DB_USER
+const {cluster, dbname, username, password} = DB_USER
 
 // load environment settings
 require('./environment.js');
@@ -19,7 +19,7 @@ let server = new FHIRServer(SERVER_CONFIG)
 // Mongodb connection initialization
 
     server.initializeDatabaseConnection({
-    url: `mongodb+srv://${username}:${password}@graphql.kel7m.mongodb.net/${dbname}?retryWrites=true&w=majority`,
+    url: `mongodb+srv://${username}:${password}@${cluster}/${dbname}?retryWrites=true&w=majority`,
     db_name: dbname,
     mongo_options: { auto_reconnect: true, useUnifiedTopology: true }
 }).then(() => {

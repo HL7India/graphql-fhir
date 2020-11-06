@@ -67,10 +67,12 @@ const RESOURCE_CONFIG = {
 	profilesRelativePath: 'profiles/**/register.js',
 };
 
+
 const DB_USER = {
-    dbname: 'your db name',    // HL7India change this to your db
-    username: 'your db user', // HL7India your db user (admin)
-    password: 'your db password' // HL7India your db password
+    cluster: 'your mongodb cluster',    // HL7India change this to your cluster
+    dbname: 'your db name',             // HL7India change this to your db
+    username: 'your db user',           // HL7India your db user (admin)
+    password: 'your db password'        // HL7India your db password
 }
 
 module.exports = {
