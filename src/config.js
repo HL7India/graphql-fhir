@@ -67,7 +67,6 @@ const RESOURCE_CONFIG = {
 	profilesRelativePath: 'profiles/**/register.js',
 };
 
-
 const DB_USER = {
     cluster: 'your mongodb cluster',    // HL7India change this to your cluster
     dbname: 'your db name',             // HL7India change this to your db
